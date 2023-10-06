@@ -22,6 +22,7 @@ Features and Functionality:
 
 <h3>Screenshots or Demo:</h3>
 
+    <img src="flowchart.png"/>
 
 <h3>Roadmap and Future Enhancements:</h3>
 
