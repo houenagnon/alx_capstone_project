@@ -15,38 +15,28 @@ Features and Functionality:
 
 <h3>Technologies Used:</h3>
 
-    Frontend: HTML, CSS, JavaScript, React.js
-    Backend: Python, Flask (or your preferred web framework)
-    Database: SQL, SQLite (or another database of your choice)
-    Authentication: User authentication using JWT (JSON Web Tokens)
-    Version Control: Git and GitHub (or your preferred version control system)
-    Deployment: Host the app on a platform like Heroku, AWS, or your choice of hosting service.
+    Frontend: HTML, CSS, JavaScript
+    Backend: Python, Flask 
+    Database: MySQL
+
 
 <h3>Screenshots or Demo:</h3>
 
-Link to Live Demo (if available)
 
-Screenshot 1
-Add your own descriptive caption here.
-
-Screenshot 2
-Add your own descriptive caption here.
-Roadmap and Future Enhancements:
+<h3>Roadmap and Future Enhancements:</h3>
 
 We have exciting plans for the future of the Book Library project. Some potential enhancements include:
 
-    User reviews and ratings for books.
-    Integration with external book databases to auto-populate book details.
-    Social sharing features to discuss books with friends.
-    Enhanced book statistics and recommendations.
-    Mobile app versions for Android and iOS.
+User reviews and ratings for books.
+Integration with external book databases to auto-populate book details.
+Social sharing features to discuss books with friends.
+Enhanced book statistics and recommendations.
+Mobile app versions for Android and iOS.
 
 <h3>Contact Information:</h3>
 
     Project Author: Merveil HOUENAGNON
     Email: merveil@email.com
     GitHub: https://github.com/houenagnon
-    LinkedIn: ----------------
-    Twitter: -------------------
 
 Feel free to customize this template with specific details about your project and your contact information. Additionally, if you have any unique features or design aspects you'd like to highlight, be sure to include them in the README. Good luck with your Book Library project!
