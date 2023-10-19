@@ -28,6 +28,6 @@ The application's user interface is intuitive, ensuring a seamless experience fo
 - Enhancements to the user interface for improved aesthetics and a more intuitive user experience.
 
 ## Contact Information:
-- Developer: [Your Name]
-- Email: [Your Email Address]
-- LinkedIn: [Your LinkedIn Profile]
+- Project Author: Merveil HOUENAGNON
+- Email: merveil@gmail.com
+- GitHub: https://github.com/houenagnon
