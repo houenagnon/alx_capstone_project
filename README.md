@@ -20,12 +20,19 @@ The application's user interface is intuitive, ensuring a seamless experience fo
 ## Screenshots or Demo:
 [Link to Live Demo](https://yourdemolink.com)
 (Insert screenshots here)
+### Register Page
 <img src="screen/Sigup.png"  alt="Sigup" />
 <br/>
+
+### Login Page
 <img src="screen/Login.png"  alt="Login" />
 <br/>
+
+### Add new Task
 <img src="screen/addTask.png"  alt="AddTask" />
 <br/>
+
+### List of Task Page
 <img src="screen/list_task.png"  alt="ListTask" />
 
 
