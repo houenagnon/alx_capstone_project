@@ -14,12 +14,11 @@ The application's user interface is intuitive, ensuring a seamless experience fo
 ## Technologies Used:
 - Frontend: HTML, CSS, JavaScript
 - Backend: Python with Flask framework
-- Database: SQLite
+- Database: MySQL
 - Additional Libraries: JQuery for frontend interactivity
 
 ## Screenshots or Demo:
-[Link to Live Demo](https://yourdemolink.com)
-(Insert screenshots here)
+
 ### Register Page
 <img src="screen/Sigup.png"  alt="Sigup" />
 <br/>
