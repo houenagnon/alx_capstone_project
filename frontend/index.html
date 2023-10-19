@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO-DO List App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="head">
+            <img src="images/profile.png">
+            <span id="userName">HOUENAGNON Merveil</span>
+            <button onclick="deconnect()">Logout</button>
+        </div>
+        <div class="top-menu">
+            <h2>To-Do-List <img src="images/icon.png"></h2>
+            <div class="search">
+                <img src="images/search.png" alt="">
+                <input type="text" id="input-box" >
+                <button onclick="filter()">Search</button>
+            </div>
+            <button id="add_button" onclick="creer_task()"><img src="images/add.png" alt=""></button>
+            <button id="return_button" onclick="list_task()" style="display: none;"><img src="images/return.png" alt=""></button>
+        </div>
+        <div class="body-container" id="body_container">
+            <div class="legend">
+                <div class="legend1 color1"></div><span>: Init</span>
+                <div class="legend2 color2"></div><span>: In progress</span>
+                <div class="legend3 color3"></div><span>: Completed</span>
+            </div>
+            
+            <div class="task-body" id="task-body">
+                
+            </div>
+        </div>
+        <div class="body-container" id="body_container1" style="display:none;">
+            <div class="form">
+                <diV class="form-left">
+                    <input type="text" id="task_name" placeholder="Task Name">
+                    <input type="text" id="task_desc" placeholder="Task Description">
+                </diV>
+                <div class="form-right">
+                    <select  id="task_status">
+                        <option value="">Task Status</option>
+                        <option value="debut">Init</option>
+                        <option value="en_cours">In progress</option>
+                        <option value="termine">Completed</option>
+                    </select>
+                    <input type="date" id="task_date" >
+                </div>
+
+                <button id="save_button" onclick="save_task()">Save</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const storedUsername = localStorage.getItem("username");
+        document.getElementById("userName").innerHTML = storedUsername;
+        document.addEventListener('DOMContentLoaded', async function() {
+
+            await fetch("http://localhost:5001/api/tasks/", {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "authorization": window.localStorage.token
+                    }
+                }).then((data)=> data.json()).then(async (data) => {
+                    for (const row of data.rows) {
+                        let div = document.createElement("div");
+                        div.setAttribute("id", row.id);
+                        div.innerHTML = row.name;
+                        taskBody.appendChild(div);
+                    
+                        if(row.tag==="en_cours"){
+                            div.classList.add("task", "color2");
+                        }else if(row.tag === "termine"){
+                            div.classList.add("task", "color3");
+                        }else{
+                            div.classList.add("task", "color1");
+                        }
+
+                    }
+                });
+        })
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

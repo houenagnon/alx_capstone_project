@@ -1,0 +1,15 @@
+Python :
+    pip install flask flask_sqlalchemy flask_marshmallow flask_jwt_extended pymysql
+    pip install -U flask-cors
+
+
+Database : 
+    mysql -u root -p
+    CREATE DATABASE ToDo;
+    CREATE USER 'todoUser'@'localhost' IDENTIFIED BY 'todo123';
+    GRANT ALL PRIVILEGES ON ToDo.* TO 'todoUser'@'localhost';
+    FLUSH PRIVILEGES;
+    use ToDo    
+
+Run :
+    python3 app.py
