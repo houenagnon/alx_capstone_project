@@ -20,7 +20,14 @@ The application's user interface is intuitive, ensuring a seamless experience fo
 ## Screenshots or Demo:
 [Link to Live Demo](https://yourdemolink.com)
 (Insert screenshots here)
-<img src="screen/Login.png" style="width:300px; heigth:300px" alt="Login" />
+<img src="screen/Sigup.png"  alt="Sigup" />
+<br/>
+<img src="screen/Login.png"  alt="Login" />
+<br/>
+<img src="screen/addTask.png"  alt="AddTask" />
+<br/>
+<img src="screen/list_task.png"  alt="ListTask" />
+
 
 ## Roadmap and Future Enhancements:
 - Integration of user authentication for secure access to individual task lists.
