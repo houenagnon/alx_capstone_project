@@ -1,43 +1,33 @@
-<h1>Book Library Web Application</h1>
-<h3>Project Overview:</h3>
+# Web Task Manager
 
-The Book Library is a web application designed for managing a personal book collection. It aims to provide users with a convenient way to keep track of their books, monitor their reading progress, and easily search and filter their collection based on various criteria. Whether you're an avid reader or just someone who enjoys keeping their bookshelf organized, this project is here to make your book management experience more efficient and enjoyable.
-Problem Statement:
+## Project Overview:
+This web application is designed to help users efficiently manage their tasks and to-do lists. It aims to simplify the process of organizing and tracking tasks, ensuring that users can prioritize and complete their work effectively. By providing a user-friendly interface and essential task management functionalities, the application streamlines the process of task management for individuals and teams alike.
 
-Managing a personal book library can be a daunting task, especially as your collection grows. It's easy to lose track of what books you have, where they are, and how far you've read in each one. The Book Library project aims to solve this problem by offering a user-friendly platform for book enthusiasts to organize, categorize, and monitor their reading journey.
-Features and Functionality:
+## Features and Functionality:
+- Task Creation: Users can easily create new tasks by providing relevant details and assigning them to specific categories or dates.
+- Task Editing: The application allows users to make changes to existing tasks, including modifying descriptions, due dates, or categories.
+- Marking as Completed: Users can mark tasks as completed, providing a clear overview of the progress made on their to-do lists.
+- Task Filtering: The application enables users to filter tasks based on categories or specific dates, facilitating efficient organization and prioritization.
 
-    Add Books: Users can easily add books to their library by entering book details, including title, author, genre, and current reading progress.
-    Track Reading Progress: Keep tabs on your reading progress by updating the current page or chapter you're on.
-    Search and Filter: Quickly find books based on author, genre, title, or reading status.
-    User Profiles: Personalized user profiles for tracking your reading history and preferences.
-    Responsive Design: Ensures a seamless experience on both desktop and mobile devices.
+The application's user interface is intuitive, ensuring a seamless experience for users to manage their tasks without unnecessary complexity.
 
-<h3>Technologies Used:</h3>
+## Technologies Used:
+- Frontend: HTML, CSS, JavaScript
+- Backend: Python with Flask framework
+- Database: SQLite
+- Additional Libraries: JQuery for frontend interactivity
 
-    Frontend: HTML, CSS, JavaScript
-    Backend: Python, Flask 
-    Database: MySQL
+## Screenshots or Demo:
+[Link to Live Demo](https://yourdemolink.com)
+(Insert screenshots here)
 
+## Roadmap and Future Enhancements:
+- Integration of user authentication for secure access to individual task lists.
+- Implementation of collaborative task management, enabling users to share and work on tasks with other users.
+- Integration of notifications to keep users informed about upcoming tasks and deadlines.
+- Enhancements to the user interface for improved aesthetics and a more intuitive user experience.
 
-<h3>Screenshots or Demo:</h3>
-
-    <img src="flowchart.png"/>
-
-<h3>Roadmap and Future Enhancements:</h3>
-
-We have exciting plans for the future of the Book Library project. Some potential enhancements include:
-
-User reviews and ratings for books.
-Integration with external book databases to auto-populate book details.
-Social sharing features to discuss books with friends.
-Enhanced book statistics and recommendations.
-Mobile app versions for Android and iOS.
-
-<h3>Contact Information:</h3>
-
-    Project Author: Merveil HOUENAGNON
-    Email: merveil@email.com
-    GitHub: https://github.com/houenagnon
-
-Feel free to customize this template with specific details about your project and your contact information. Additionally, if you have any unique features or design aspects you'd like to highlight, be sure to include them in the README. Good luck with your Book Library project!
+## Contact Information:
+- Developer: [Your Name]
+- Email: [Your Email Address]
+- LinkedIn: [Your LinkedIn Profile]
