@@ -1,4 +1,4 @@
-const inputBox = document.getElementById("input-box");
+const searchInput = document.getElementById("searchBox");
 const listContainer = document.getElementById("list-container");
 
 const firstContainer = document.getElementById("body_container");
@@ -40,24 +40,32 @@ function save_task(){
         alert("Champs Vide!!!");
     }else{
 
-        document.getElementById("task_name").value = "";
-        document.getElementById("task_status").value = "";
-    
-        // await fetch("http://localhost:5001/api/tasks/", {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         "authorization": window.localStorage.token
-        //     },ldzlldz
-        //     body: JSON.stringify({
-        //         "name": taskName,
-        //         "tag": taskStatus
-        //     }),
-        // }).then((data)=> data.json()).then(data => {
-            // if (data.success === true)
-            // {
+        // document.getElementById("task_name").value = "";
+        // document.getElementById("task_status").value = "";
+        const data = {
+            id: window.localStorage.getItem("how"),
+            name: taskName,
+            content: taskDescription,
+            tag: taskStatus,
+            due_date: taskDate
+          };
+          console.log(data)
+          
+        fetch('http://127.0.0.1:5000/task', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Task save : ', data);
+
+            if (data)
+            {
                 let div = document.createElement("div");
-                // div.setAttribute("id", data.row.id)
+                div.setAttribute("id", data.id)
                 div.innerHTML = taskName;
                 //console.log(taskName + ":::::::");
                 taskBody.appendChild(div);
@@ -70,16 +78,20 @@ function save_task(){
                 }else{
                     div.classList.add("task", "color1");
                 }
-            // }
-            // else
-            //     alert(data.msg);
+            }
+            else
+                alert(data.msg);
 
 
             returnButton.style.display = "none";
             secondContainer.style.display = "none";
             firstContainer.style.display = "block";
             addButton.style.display = "block";
-      ///  })
+            
+        })
+        .catch((error) => {
+            console.error('Une erreur s\'est produite lors de l\'enregistrement de l\'utilisateur : ', error);
+        });
 
      }
 }
@@ -131,50 +143,53 @@ taskBody.addEventListener("click", function(e){
                 }else{
                     document.getElementById("task_status").selectedIndex = 3;
                 }
+                console.log('Id est ------------> ' + id)
+                // A completer .........................................
+                fetch('http://localhost:5000/task/by/' + id, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'  
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    document.getElementById('task_desc').value = data[0].content
+                    document.getElementById('task_date').value = data[0].due_date
+                })
+                .catch(error => console.error('Erreur :', error));
+                
 
-                document.getElementById("save_button").onclick = async function(){
+                document.getElementById("save_button").onclick =    function(){
                     const taskName = document.getElementById("task_name").value;
+                    const taskDescription = document.getElementById("task_desc").value;
+                    const taskDate = document.getElementById("task_date").value;
                     const TS = document.getElementById("task_status").value;
-                    
-                    if(TS==="en_cours"){
-                        taskStatus = "color2";
-                    }else if(TS === "termine"){
-                        taskStatus = "color3";
-                    }else if(TS === "debut"){
-                        taskStatus = "color1";
-                    }else{
-                        taskStatus = "";
-                    }
 
-                    if(taskName ==="" || taskStatus ===""){
-                        alert("Champs Vide");
-                    }else{
-                        await fetch("http://localhost:5001/api/tasks/"+id, {
-                            method: "PATCH",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "authorization": window.localStorage.token
-                            },
-                            body: JSON.stringify({
-                                "name": taskName,
-                                "tag": TS
-                            }),
-                        }).then((data)=> data.json()).then(data => {
-                            console.log(data);
-                            if(data.success) {
-                                e.target.textContent = taskName;
-                                e.target.className = "task " + taskStatus;
-                            }
-                            else{
-                                alert('Something went wrong, try again later')
-                                list_task()
-                            }
-                        })
-                        document.getElementById("task_name").value = "";
-                        document.getElementById("task_status").value = "";
-                          list_task();
-                          
-                    }
+                    const updatedTask = {
+                        name: taskName,
+                        content: taskDescription,
+                        tag: TS,
+                        due_date: taskDate
+                    };
+                    
+                    fetch('http://localhost:5000/task/' +id, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updatedTask)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur lors de la mise à jour de la tâche');
+                        }
+                        return response.json();
+                    })
+                    .then(data =>{ console.log(data)
+                        list_task();
+                    })
+                    .catch(error => console.error('Erreur :', error.message));
                     
                 };
             };
@@ -182,16 +197,14 @@ taskBody.addEventListener("click", function(e){
             // Ajoutez un gestionnaire d'événements onclick à l'image "Close"
             closeImg.onclick = async function() {
 
-                await fetch("http://localhost:5001/api/tasks/"+id, {
+                await fetch("http://localhost:5000/task/"+id, {
                             method: "DELETE",
                             headers: {
-                                "Content-Type": "application/json",
-                                "authorization": window.localStorage.token
+                                "Content-Type": "application/json"
                             }
                         }).then((data)=> data.json()).then(data => {
                             console.log(data);
-                            if(data.success) e.target.remove();
-                            else alert('Something went wrong, try again later')
+                            e.target.remove();
                         })
                
             };
@@ -248,35 +261,47 @@ function save_user(){
         });
 }
 
-async function connect_user(){
-    const mail = document.getElementById("user_mail_c").value.trim();
+function connect_user(){
+    const email = document.getElementById("user_mail_c").value.trim();
     const pass = document.getElementById("user_pass_c").value;
 
-    const response = await fetch("http://localhost:5001/api/users/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            "email": mail,
-            "password": pass
-        }),
-    }).then((data)=> data.json()).then(async (data) => {
-        if (!data.error){
-            //user.innerHTML = data.user.name;
-            window.localStorage.setItem("username", data.user.name);
-            window.localStorage.setItem("token", "Bearer " + data.token);
+
+    const data = {
+        email: email,
+        password: pass
+    };
+
+    fetch('http://127.0.0.1:5000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // const dataB = JSON.parse(data);
+            console.log('Utilisateur Connecté avec succès : ', data);
+            window.localStorage.setItem("username", data.username);
+            window.localStorage.setItem("access_token", data.access_token);
+            window.localStorage.setItem("how", data.how);
+
             
             window.location.href = "index.html";
-        }
-        else alert("Internal server error. Please try again");
-    });
+        })  
+        .catch((error) => {
+            console.error('Une erreur s\'est produite lors de l\'enregistrement de l\'utilisateur : ', error);
+        });
+   
+            
+        
 }
 
 function deconnect(){
-    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("access_token");
     window.localStorage.removeItem("username");
-    window.location.href = "inscrit.html";
+    window.localStorage.removeItem("how");
+    window.location.href = "connect.html";
 }
 
 function go_to_connect(){
@@ -292,7 +317,7 @@ function go_to_connect(){
 // }
 
 function filter(){
-    const critere = inputBox.value.toLowerCase();
+    const critere = searchInput.value.toLowerCase();
     const items = taskBody.getElementsByTagName("div");
 
 
@@ -306,6 +331,9 @@ function filter(){
         }
     }
 }
+
+
+searchInput.addEventListener('input', filter);
 
 // showTask();
 // 

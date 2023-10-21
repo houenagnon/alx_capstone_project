@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from datetime import datetime
@@ -16,7 +16,7 @@ jwt = JWTManager(app)
 # Initialisation de la base de données
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Modèles
 class User(db.Model):
@@ -39,9 +39,12 @@ class Task(db.Model):
     due_date = db.Column(db.DateTime, nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    def __init__(self, content, user_id):
+                
+    def __init__(self,name, content, tag, due_date, user_id):
+        self.name = name
         self.content = content
+        self.tag = tag
+        self.due_date = due_date
         self.user_id = user_id
 
 # Schémas de sérialisation
@@ -51,7 +54,7 @@ class UserSchema(ma.Schema):
 
 class TaskSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'content', 'user_id')
+        fields = ('id', 'name', 'content', 'tag', 'due_date', 'date_created', 'user_id')
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
@@ -82,7 +85,7 @@ def login_user():
     user = User.query.filter_by(email=email).first()
     if user and user.password == password:
         access_token = create_access_token(identity=user.id)
-        return jsonify(access_token=access_token)
+        return jsonify(access_token=access_token, username=user.username, how=user.id)
     else:
         return jsonify({'message': 'Invalid credentials'}), 401
 
@@ -92,20 +95,13 @@ def login_user():
 # ...
 
 
-
 @app.route('/task', methods=['POST'])
-@jwt_required()
 def add_task():
-    # token = request.headers.get('Authorization').split(" ")[1]  # Récupère le token JWT de l'en-tête
-    # current_user_id = get_user_id_from_token(token)  # Récupère l'ID de l'utilisateur à partir du token
-
-    # if current_user_id is None:
-    #     return jsonify({'message': 'Erreur lors de la récupération de l\'ID de l\'utilisateur.'}), 401
     user_id = request.json['id']
-    name = request.json['name']
+    name = request.json['name']  # Ajoutez cette ligne pour récupérer le champ 'name'
     content = request.json['content']
-    tag = request.json.get('tag', 'init')  # 'init' sera la valeur par défaut si 'tag' n'est pas fourni
-    due_date = datetime.strptime(request.json['due_date'], '%Y-%m-%d %H:%M:%S')
+    tag = request.json.get('tag', 'init')
+    due_date = request.json['due_date']
 
     new_task = Task(name=name, content=content, tag=tag, due_date=due_date, user_id=user_id)
 
@@ -115,16 +111,23 @@ def add_task():
     return task_schema.jsonify(new_task)
 
 
-@app.route('/task', methods=['GET'])
-def get_all_tasks():
-    all_tasks = Task.query.all()
-    result = tasks_schema.dump(all_tasks)
+    
+
+@app.route('/task/<user_id>', methods=['GET'])
+def get_all_tasks(user_id):
+    tasks = Task.query.filter_by(user_id=user_id).all()
+    result = tasks_schema.dump(tasks)
+
     return jsonify(result)
 
-@app.route('/task/me', methods=['GET'])
-def get_task(task_id):
-    task = Task.query.get(task_id)
-    return task_schema.jsonify(task)
+@app.route('/task/by/<task_id>', methods=['GET'])
+def get_tasks(task_id):
+    tasks = Task.query.filter_by(id=task_id).all()
+    result = tasks_schema.dump(tasks)
+    return jsonify(result)
+
+
+
 
 @app.route('/task/<task_id>', methods=['PUT'])
 def update_task(task_id):
@@ -133,12 +136,12 @@ def update_task(task_id):
     name = request.json['name']
     content = request.json['content']
     tag = request.json.get('tag', task.tag)  # Conserve la valeur actuelle si 'tag' n'est pas fourni
-    due_date = datetime.strptime(request.json['due_date'], '%Y-%m-%d %H:%M:%S')
+    due_date = request.json['due_date']
 
     task.name = name
     task.content = content
     task.tag = tag
-    task.due_date = due_date
+    task.due_date = due_date    
 
     db.session.commit()
 

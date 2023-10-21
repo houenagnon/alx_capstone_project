@@ -158,6 +158,12 @@ button img{
     margin-left: 5px;
 }
 
+.legend-data-choice{
+    display: flex;
+    justify-content: space-between;
+}
+
+
 .legend{
     display: flex;
     flex-wrap: wrap;

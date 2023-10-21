@@ -10,28 +10,30 @@
     <div class="container">
         <div class="head">
             <img src="images/profile.png">
-            <span id="userName">HOUENAGNON Merveil</span>
+            <span id="userName"></span>
             <button onclick="deconnect()">Logout</button>
         </div>
         <div class="top-menu">
             <h2>To-Do-List <img src="images/icon.png"></h2>
             <div class="search">
                 <img src="images/search.png" alt="">
-                <input type="text" id="input-box" >
+                <input type="text" id="searchBox" >
                 <button onclick="filter()">Search</button>
             </div>
             <button id="add_button" onclick="creer_task()"><img src="images/add.png" alt=""></button>
             <button id="return_button" onclick="list_task()" style="display: none;"><img src="images/return.png" alt=""></button>
         </div>
         <div class="body-container" id="body_container">
-            <div class="legend">
-                <div class="legend1 color1"></div><span>: Init</span>
-                <div class="legend2 color2"></div><span>: In progress</span>
-                <div class="legend3 color3"></div><span>: Completed</span>
+            <div class="legend-data-choice">
+                <div class="legend">
+                    <div class="legend1 color1"></div><span>: Init</span>
+                    <div class="legend2 color2"></div><span>: In progress</span>
+                    <div class="legend3 color3"></div><span>: Completed</span>
+                </div>
+                <input type="datetime-local" id="date_choose" value="" >
             </div>
-            
+            <br>
             <div class="task-body" id="task-body">
-                
             </div>
         </div>
         <div class="body-container" id="body_container1" style="display:none;">
@@ -47,7 +49,7 @@
                         <option value="en_cours">In progress</option>
                         <option value="termine">Completed</option>
                     </select>
-                    <input type="date" id="task_date" >
+                    <input type="datetime-local" id="task_date" >
                 </div>
 
                 <button id="save_button" onclick="save_task()">Save</button>
@@ -55,34 +57,56 @@
         </div>
     </div>
     <script>
-        const storedUsername = localStorage.getItem("username");
-        document.getElementById("userName").innerHTML = storedUsername;
-        document.addEventListener('DOMContentLoaded', async function() {
+        const storedUsername = window.localStorage.getItem("username");
+        const id_user = window.localStorage.getItem("how");
 
-            await fetch("http://localhost:5001/api/tasks/", {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "authorization": window.localStorage.token
-                    }
-                }).then((data)=> data.json()).then(async (data) => {
-                    for (const row of data.rows) {
+        const taskDateInput = document.getElementById('date_choose');
+
+        function formatLocalDateTime(date) {
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+        taskDateInput.value = formatLocalDateTime(new Date());
+
+        setInterval(() => {
+            taskDateInput.value = formatLocalDateTime(new Date());
+        }, 1000);
+
+        
+        document.getElementById("userName").innerHTML = storedUsername;
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('http://localhost:5000/task/' + id_user) 
+            .then(response => response.json())
+            .then(data => {
+            console.log(data[0].name)
+            for (let row = 0; row < data.length; row++) {
                         let div = document.createElement("div");
-                        div.setAttribute("id", row.id);
-                        div.innerHTML = row.name;
+                        div.setAttribute("id", data[row].id);
+                        div.innerHTML = data[row].name;
                         taskBody.appendChild(div);
                     
-                        if(row.tag==="en_cours"){
+                        if(data[row].tag==="en_cours"){
                             div.classList.add("task", "color2");
-                        }else if(row.tag === "termine"){
+                        }else if(data[row].tag === "termine"){
                             div.classList.add("task", "color3");
                         }else{
                             div.classList.add("task", "color1");
                         }
 
                     }
-                });
+    })
+  .catch(error => console.error('Erreur lors de la récupération des données:', error));
+
         })
+        
+
     </script>
     <script src="script.js"></script>
+    
 </body>
 </html>
